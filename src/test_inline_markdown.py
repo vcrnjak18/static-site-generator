@@ -1,5 +1,5 @@
 import unittest
-from split_delimiter import *
+from inline_markdown import *
 
 class TestDelimiter(unittest.TestCase):
 
@@ -35,3 +35,21 @@ class TestDelimiter(unittest.TestCase):
 
         with self.assertRaises(Exception):
             result_node4
+
+
+    def test_extracting_images(self):
+        text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
+        expected = [("rick roll", "https://i.imgur.com/aKaOqIh.gif"), ("obi wan", "https://i.imgur.com/fJRm4Vk.jpeg")]
+
+        self.assertListEqual(extract_markdown_images(text), expected)
+
+    def test_extracting_links(self):
+        text = "This is text with a [rick roll](https://i.imgur.com/aKaOqIh.gif) and [obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
+        expected = [("rick roll", "https://i.imgur.com/aKaOqIh.gif"), ("obi wan", "https://i.imgur.com/fJRm4Vk.jpeg")]
+
+        text_empty = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
+        expected_empty = []
+
+        self.assertListEqual(extract_markdown_links(text), expected)
+
+        self.assertListEqual(extract_markdown_links(text_empty), expected_empty)
