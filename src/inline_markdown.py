@@ -80,6 +80,8 @@ def split_nodes_image(old_nodes):
 
         return final_list
 
+
+
     #ovo je ista funkcija kao image, samo drugačiji stil
 def split_nodes_link(old_nodes):
     final_list = []
@@ -106,7 +108,7 @@ def split_nodes_link(old_nodes):
 
             if sections[0]:
                 final_list.append(TextNode(sections[0], TextType.NORMAL))
-                
+
             final_list.append(TextNode(tuple[0], TextType.LINK, tuple[1]))
 
             text_to_extract = sections[1]
@@ -115,3 +117,16 @@ def split_nodes_link(old_nodes):
             final_list.append(TextNode(text_to_extract, TextType.NORMAL))
                 
     return final_list
+
+
+
+def text_to_textnodes(text):
+    node = [TextNode(text, TextType.NORMAL)] #kreiraj TextNode od običnog teksta, postavi na normal
+
+    node = split_nodes_delimiter(node, "**", TextType.BOLD) #prebriši node pod ovim uvjetima
+    node = split_nodes_delimiter(node, "*", TextType.ITALIC) #...
+    node = split_nodes_delimiter(node, "`", TextType.CODE)
+    node = split_nodes_image(node)
+    node = split_nodes_link(node)
+
+    return node
