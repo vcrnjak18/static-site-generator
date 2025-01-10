@@ -37,11 +37,14 @@ class TestDelimiter(unittest.TestCase):
             result_node4
 
 
+
     def test_extracting_images(self):
         text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
         expected = [("rick roll", "https://i.imgur.com/aKaOqIh.gif"), ("obi wan", "https://i.imgur.com/fJRm4Vk.jpeg")]
 
         self.assertListEqual(extract_markdown_images(text), expected)
+
+
 
     def test_extracting_links(self):
         text = "This is text with a [rick roll](https://i.imgur.com/aKaOqIh.gif) and [obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
@@ -53,3 +56,32 @@ class TestDelimiter(unittest.TestCase):
         self.assertListEqual(extract_markdown_links(text), expected)
 
         self.assertListEqual(extract_markdown_links(text_empty), expected_empty)
+
+def test_splitting_images(self):
+    tex = "Some text"
+    tex_im = "Some text with some ![image](image_url)"
+    tex_im_tex = "some text ![image](image_url) in some text"
+    tex_im_im_tex_im = "some text ![image](image_url)![img2](img2_url) then text and ![image3](image3_url)"
+    im_tex = "![image](img_url) after text"
+    im = "![image](img_url)"
+    im_tex_im = "![image](img_url) then text then ![image2](img_url2)"
+    tex_im_tex_im = "tekst then ![image](img_url) then ![image2](img2_url)"
+
+    tex_expected = [TextNode("Some text", TextType.NORMAL)]
+    tex_im_expected = [TextNode("Some text with some ", TextType.NORMAL), TextNode("image", TextType.IMAGE, "image_url")]
+
+    self.assertListEqual(split_nodes_image(tex), tex_expected)
+    self.assertListEqual(split_nodes_image(tex_im), tex_im_expected)
+
+def test_splitting_links(self):
+    tex = "Some text"
+    tex_lin = "Some text with some [link name](url)"
+    lin_tex = "[link name](url) after text"
+
+    tex_expected = [TextNode("Some text", TextType.NORMAL)]
+    tex_lin_expected = [TextNode("Some text with some ", TextType.NORMAL), TextNode("link name", TextType.LINK, "url")]
+    lin_tex_expected = [TextNode("link name", TextType.LINK, "url"), TextNode(" after text", TextType.NORMAL)]
+
+    self.assertListEqual(split_nodes_link(tex), tex_expected)
+    self.assertListEqual(split_nodes_link(tex_lin), tex_lin_expected)
+    self.assertListEqual(split_nodes_link(lin_tex), lin_tex_expected)
