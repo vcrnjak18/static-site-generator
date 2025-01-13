@@ -79,7 +79,12 @@ class ParentNode(HTMLNode):
     def __repr__(self):
         return f"ParentNode({self.tag}, children: {self.children}, {self.props})"
 
-        
+
+
+# ---------------------------------------------------------------
+
+
+
 # izgled text_node = TextNode(text, text_type, url=None)    
 def text_node_to_html_node(text_node):
     match(text_node.text_type):

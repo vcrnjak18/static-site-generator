@@ -33,6 +33,9 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     return final_list
 
 
+# -------------------------------------------------------
+
+# ---- helper functions:
 
 def extract_markdown_images(text):
     # takes text, returns list of tuples(alt text, path/url)
@@ -43,6 +46,7 @@ def extract_markdown_links(text):
     return re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
 
 
+# ----- main function 1:
 
 def split_nodes_image(old_nodes):
         final_list = []
@@ -81,8 +85,9 @@ def split_nodes_image(old_nodes):
         return final_list
 
 
+# ----- main function 2:
 
-    #ovo je ista funkcija kao image, samo drugačiji stil
+# ovo je ista funkcija kao image, samo drugačiji stil
 def split_nodes_link(old_nodes):
     final_list = []
 
@@ -118,6 +123,9 @@ def split_nodes_link(old_nodes):
                 
     return final_list
 
+
+
+# -------------------------------------------
 
 
 def text_to_textnodes(text):

@@ -103,3 +103,7 @@ def test_text_to_textnode(self):
     ]
 
     self.assertListEqual(text_to_textnodes(text), text_expected)
+
+
+if __name__ == "__main__":
+    unittest.main()
