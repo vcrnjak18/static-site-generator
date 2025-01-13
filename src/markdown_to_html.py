@@ -139,3 +139,20 @@ def markdown_to_html_node(markdown):
     final_parent = ParentNode(tag="div", children=list_of_html_blocks)
 
     return final_parent
+
+
+# ------------------
+
+def extract_title(markdown):
+    list_of_blocks = markdown_to_blocks(markdown)
+
+    for block in list_of_blocks:
+        parts = block.split()
+
+        if len(parts) > 1: #ako splitani blok ima samo 1 element, to nije heading
+            no_of_hash = parts[0].count("#") #prebroji hashove u prvom elementu
+            if no_of_hash == 1:
+                title = block.lstrip("# ")
+                return title
+    
+    raise Exception("There is no h1 header!")
