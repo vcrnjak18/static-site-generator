@@ -50,10 +50,35 @@ def generate_page(from_path, template_path, dest_path):
         with open(dest_path, 'w') as output:
             output.write(full_html)
 
-        with open(dest_path, 'r') as check_file:
-            print("Contents of the saved file:")
-            print(check_file.read())
-
     except Exception as e:
         print(f"Error during page generation: {e}")
         raise e
+
+
+# --------------------------------------------
+
+
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    content_items = os.listdir(dir_path_content)
+
+    for item in content_items:
+        item_path = os.path.join(dir_path_content, item)
+        if os.path.isfile(item_path) and item.endswith(".md"):
+
+            # get relative path to perserve the structure; if item is in content/majesty/item.md, then relative is majesty/item.md
+            rel_item_path = os.path.relpath(item_path, dir_path_content) # kreće od contenta (to ignorira) i ide dalje
+            
+            # this has item.md file, we need item.html file, so:
+            rel_item_path_html = rel_item_path.replace(".md", ".html")
+         
+            # destination path is now dest path + inner structure of starting folder
+            dest_item_path = os.path.join(dest_dir_path, rel_item_path_html)
+        
+            folder_names = os.path.dirname(dest_item_path) # gets the name of the folder where .md item is including parent folders i.e. public/majesty
+            os.makedirs(folder_names, exist_ok=True) # ako ne postoje na destinaciji, kreiraj sve te foldere; ako postoje, ok
+            
+            generate_page(item_path, template_path, dest_item_path)
+        
+        if os.path.isdir(item_path):
+            new_dest_dir = os.path.join(dest_dir_path, item) # perserve last location
+            generate_pages_recursive(item_path, template_path, new_dest_dir)

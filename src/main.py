@@ -12,6 +12,6 @@ def main():
     #print(text_node_obj)
 
     copy_static_public("static", "public")
-    generate_page("content/index.md", "template.html", "public/index.html")
+    generate_pages_recursive("content", "template.html", "public")
 
 main()
